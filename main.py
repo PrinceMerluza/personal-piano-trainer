@@ -74,7 +74,7 @@ def fill_notes_dict(scale=1.0):
 
 
 # Returns pygame surface of a whole note
-def draw_whole_note(note_size, filled=False):
+def generate_whole_note(note_size, filled=False):
     note_width = note_size[0]
     note_height = note_size[1]
     note = pygame.Surface(note_size)
@@ -89,7 +89,7 @@ def draw_whole_note(note_size, filled=False):
     return note
 
 
-def draw_half_note(note_size):
+def generate_half_note(note_size):
     note_width = note_size[0]
     note_height = note_size[1]
     note = pygame.Surface(note_size)
@@ -104,7 +104,7 @@ def draw_half_note(note_size):
     return note
 
 
-def draw_quarter_note(note_size):
+def generate_quarter_note(note_size):
     note_width = note_size[0]
     note_height = note_size[1]
     note = pygame.Surface(note_size)
@@ -119,7 +119,7 @@ def draw_quarter_note(note_size):
     return note
 
 
-def draw_eighth_note(note_size):
+def generate_eighth_note(note_size):
     note_width = note_size[0]
     note_height = note_size[1]
     note = pygame.Surface(note_size)
@@ -134,7 +134,7 @@ def draw_eighth_note(note_size):
     return note
 
 
-def draw_sixteenth_note(note_size):
+def generate_sixteenth_note(note_size):
     note_width = note_size[0]
     note_height = note_size[1]
     note = pygame.Surface(note_size)
@@ -149,7 +149,7 @@ def draw_sixteenth_note(note_size):
     return note
 
 
-def draw_thirty_second_note(note_size):
+def generate_thirty_second_note(note_size):
     note_width = note_size[0]
     note_height = note_size[1]
     note = pygame.Surface(note_size)
