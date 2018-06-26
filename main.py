@@ -65,12 +65,12 @@ def fill_notes_dict(scale=1.0):
     note_height = 125 * scale
     note_size = (note_width, note_height)
 
-    notes_dict.setdefault('1', draw_whole_note(note_size))
-    notes_dict.setdefault('2', draw_half_note(note_size))
-    notes_dict.setdefault('4', draw_quarter_note(note_size))
-    notes_dict.setdefault('8', draw_eighth_note(note_size))
-    notes_dict.setdefault('16', draw_sixteenth_note(note_size))
-    notes_dict.setdefault('32', draw_thirty_second_note(note_size))
+    notes_dict.setdefault('1', generate_whole_note(note_size))
+    notes_dict.setdefault('2', generate_half_note(note_size))
+    notes_dict.setdefault('4', generate_quarter_note(note_size))
+    notes_dict.setdefault('8', generate_eighth_note(note_size))
+    notes_dict.setdefault('16', generate_sixteenth_note(note_size))
+    notes_dict.setdefault('32', generate_thirty_second_note(note_size))
 
 
 # Returns pygame surface of a whole note
@@ -95,7 +95,7 @@ def generate_half_note(note_size):
     note = pygame.Surface(note_size)
     note.fill(colors['MAGENTA'])
     note.set_colorkey(colors['MAGENTA'])
-    note.blit(draw_whole_note(note_size), (0, 0))
+    note.blit(generate_whole_note(note_size), (0, 0))
     pygame.draw.line(note,
                      colors['BLACK'],
                      (note_width / 2.1, (5 * note_height) / 6),
@@ -110,7 +110,7 @@ def generate_quarter_note(note_size):
     note = pygame.Surface(note_size)
     note.fill(colors['MAGENTA'])
     note.set_colorkey(colors['MAGENTA'])
-    note.blit(draw_whole_note(note_size, True), (0, 0))
+    note.blit(generate_whole_note(note_size, True), (0, 0))
     pygame.draw.line(note,
                      colors['BLACK'],
                      (note_width / 2.1, (5 * note_height) / 6),
@@ -125,7 +125,7 @@ def generate_eighth_note(note_size):
     note = pygame.Surface(note_size)
     note.fill(colors['MAGENTA'])
     note.set_colorkey(colors['MAGENTA'])
-    note.blit(draw_quarter_note(note_size), (0, 0))
+    note.blit(generate_quarter_note(note_size), (0, 0))
     pygame.draw.line(note,
                      colors['BLACK'],
                      (note_width / 2.1, 0),
@@ -140,7 +140,7 @@ def generate_sixteenth_note(note_size):
     note = pygame.Surface(note_size)
     note.fill(colors['MAGENTA'])
     note.set_colorkey(colors['MAGENTA'])
-    note.blit(draw_eighth_note(note_size), (0, 0))
+    note.blit(generate_eighth_note(note_size), (0, 0))
     pygame.draw.line(note,
                      colors['BLACK'],
                      (note_width / 2.1, note_height / 8),
@@ -155,7 +155,7 @@ def generate_thirty_second_note(note_size):
     note = pygame.Surface(note_size)
     note.fill(colors['MAGENTA'])
     note.set_colorkey(colors['MAGENTA'])
-    note.blit(draw_sixteenth_note(note_size), (0, 0))
+    note.blit(generate_sixteenth_note(note_size), (0, 0))
     pygame.draw.line(note,
                      colors['BLACK'],
                      (note_width / 2.1, (note_height / 8) * 2),
