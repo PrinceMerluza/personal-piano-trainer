@@ -15,6 +15,8 @@ colors = {
 STAFF_LINE_INTERVAL = 30
 STAFF_LINE_PIXEL_WIDTH = 2
 
+notes_dict = {}
+
 def main():
     # Game Loop
     while True:
@@ -52,6 +54,20 @@ def draw_staff(width, start_pos=(0, 0)):
                          (start_pos[0] + width,
                           start_pos[1] + STAFF_LINE_INTERVAL * i),
                          STAFF_LINE_PIXEL_WIDTH)
+
+
+def fill_notes_dict(scale=1.0):
+    note_width = 200 * scale
+    note_height = 300 * scale
+    note_size = (note_width, note_height)
+
+    whole_note = pygame.Surface(note_size)
+    pygame.draw.ellipse(whole_note,
+                        colors['BLACK'],
+                        Rect((0, (2 * note_height) / 3),
+                            (note_width / 2, note_height / 3)),
+                        STAFF_LINE_PIXEL_WIDTH)
+    notes_dict.setdefault('whole_note', whole_note)
 
 
 if __name__ == '__main__':
