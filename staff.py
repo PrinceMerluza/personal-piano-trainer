@@ -25,4 +25,4 @@ def draw_staff(width, surface, start_pos=(0, 0)):
 
 def draw_grand_staff(width, surface, start_pos=(0, 0)):
     draw_staff(width, surface, start_pos)
-    draw_staff(width, surface, (start_pos[0], 200 + start_pos[1]))
+    draw_staff(width, surface, (start_pos[0], 180 + start_pos[1]))
