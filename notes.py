@@ -6,10 +6,15 @@ _notes_dict = {}
 
 _LINE_WIDTH = 2
 
-def get_notes_dict(scale=1.0):
+_offset = (0, 0)
+
+
+def generate_notes_dict(scale=1.0):
     note_width = 100 * scale
     note_height = 125 * scale
     note_size = (note_width, note_height)
+    _offset[0] = int(note_width * (1.0 / 4.0))
+    _offset[1] = int(note_height * (5.0 / 6.0))
 
     _notes_dict.setdefault('1', _generate_whole_note(note_size))
     _notes_dict.setdefault('2', _generate_half_note(note_size))
@@ -18,7 +23,10 @@ def get_notes_dict(scale=1.0):
     _notes_dict.setdefault('16', _generate_sixteenth_note(note_size))
     _notes_dict.setdefault('32', _generate_thirty_second_note(note_size))
 
-    return _notes_dict
+
+def get_offset():
+    return _offset
+
 
 def _generate_whole_note(note_size, filled=False):
     note_width = note_size[0]
@@ -111,4 +119,4 @@ def _generate_thirty_second_note(note_size):
 
 
 def draw_note(note_to_draw, surface, pos=(0, 0)):
-    surface.blit(_notes_dict[note_to_draw], pos)
+    surface.blit(_notes_dict[note_to_draw], (pos[0] - _offset[0], pos[1] - _offset[1]))
