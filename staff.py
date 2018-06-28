@@ -21,3 +21,8 @@ def draw_staff(width, surface, start_pos=(0, 0)):
                          (start_pos[0] + width,
                           start_pos[1] + STAFF_LINE_INTERVAL * i),
                          STAFF_LINE_PIXEL_WIDTH)
+
+
+def draw_grand_staff(width, surface, start_pos=(0, 0)):
+    draw_staff(width, surface, start_pos)
+    draw_staff(width, surface, (start_pos[0], 200 + start_pos[1]))
