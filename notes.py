@@ -6,7 +6,7 @@ _notes_dict = {}
 
 _LINE_WIDTH = 2
 
-_offset = (0, 0)
+_offset = [0, 0]
 
 
 def generate_notes_dict(scale=1.0):
