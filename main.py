@@ -4,8 +4,7 @@ from sys import exit
 from pygame.locals import *
 import pygame.midi
 
-import notes
-import staff
+from sheetmusicui import notes, staff
 from style import colors
 
 
@@ -55,17 +54,6 @@ def event_update():
                 pressed_key(midi_event[0][1])
 
 
-def pressed_key(key):
-    global key_pressed
-    key_pressed = midi_value_to_note_string(key)
-
-
-def random_test_note():
-    global test_note
-    test_note = practice_notes[random.randint(0, len(practice_notes) - 1)]
-    print(test_note)
-
-
 def display_update():
     global test_note
     screen.fill(colors['WHITE'])
@@ -75,6 +63,17 @@ def display_update():
     draw_note_on_staff(staff_pos, 1, test_note)
 
     pygame.display.update()
+
+
+def pressed_key(key):
+    global key_pressed
+    key_pressed = midi_value_to_note_string(key)
+
+
+def random_test_note():
+    global test_note
+    test_note = practice_notes[random.randint(0, len(practice_notes) - 1)]
+    print(test_note)
 
 
 def draw_note_on_staff(staff_pos, note_pos, note_string):

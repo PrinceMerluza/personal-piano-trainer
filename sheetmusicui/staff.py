@@ -1,12 +1,25 @@
 import pygame
 from pygame import Rect, transform, image
 from style import colors
+from sheetmusicui import notes
+
 
 STAFF_LINE_INTERVAL = 30    # Pixel interval between staff lines
 STAFF_LINE_PIXEL_WIDTH = 2  # Width in Pixel of staff line
 
 TREBLE_CLEF_FILE = "./assets/treble-clef.png"
 BASS_CLEF_FILE = "./assets/bass-clef.png"
+
+_existing_notes = []
+
+
+def add_note(note_to_add):
+    _existing_notes.append(note_to_add)
+
+
+def draw_notes(surface):
+    for note in _existing_notes:
+        notes.draw_note()
 
 
 def draw_staff(width, surface, start_pos=(0, 0), type=None):
