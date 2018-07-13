@@ -5,7 +5,7 @@ from pygame.locals import *
 import pygame.midi
 
 from sheetmusicui import notes, staff
-from style import colors
+from sheetmusicui.style import colors
 
 
 pygame.init()
@@ -13,7 +13,7 @@ pygame.midi.init()
 
 screen = pygame.display.set_mode((800, 600))
 
-notes.generate_notes_dict(0.7)
+#notes.generate_notes_dict(0.7)
 
 note_values = ['G', 'F', 'E', 'D', 'C', 'B', 'A']
 all_notes = ["A", "Bb", "B", "C", "Db", "D", "Eb", "E", "F", "F#", "G", "Ab"]
@@ -31,14 +31,21 @@ test_note = ""
 
 
 def main():
-    random_test_note()
+    grand_staff = staff.GrandStaff(700, 20, 20)
+
+    screen.fill(colors['WHITE'])
+    grand_staff.draw(screen)
+    pygame.display.update()
+
+    # random_test_note()
+
     # Game Loop
     while True:
         event_update()
-        display_update()
-
-        if key_pressed == test_note:
-            random_test_note()
+        # display_update()
+    #
+    #    if key_pressed == test_note:
+    #        random_test_note()
 
 
 def event_update():
