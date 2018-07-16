@@ -4,7 +4,7 @@ from sheetmusicui.style import colors
 from sheetmusicui import notes
 
 
-class Staff():
+class Staff:
     """Staff that manages notes inside it"""
     STAFF_LINE_INTERVAL = 30  # Pixel interval between staff lines
     STAFF_LINE_PIXEL_WIDTH = 2  # Width in Pixel of staff line
@@ -21,7 +21,6 @@ class Staff():
         :param y:       Int. Y-position of staff
         """
         self.clef = clef
-        self.notes = []
         self.width = width
         self.x = x
         self.y = y
@@ -29,11 +28,6 @@ class Staff():
     def get_pos(self):
         """Returns tuple of staff position"""
         return self.x, self.y
-
-    def _draw_notes(self):
-        """Draw notes into the staff"""
-        for note in self.notes:
-            pass
 
     def draw(self, surface):
         """
@@ -91,3 +85,40 @@ class GrandStaff:
         self.treble_clef.draw(surface)
         self.bass_clef.draw(surface)
 
+
+class StaffManager:
+    """Manages the staff and the notes inside, only one staff can be created at a time"""
+    def __init__(self):
+        self.staff = None
+        self._notes = []
+        self._max_notes = None
+
+    def add_note(self, note):
+        if type(note) == 'Note':
+            self._notes.append(note)
+        else:
+            raise TypeError("Append 'Note' object")
+
+    def draw(self, surface):
+        """Draw staff and notes"""
+        # Draw staff
+        self.staff.draw(surface)
+
+        # Draw notes
+        for i, note in enumerate(self._notes):
+            if 44 <= note.tone <= 77:
+                pass
+                #note.draw(surface, x=i * 30, y=)
+
+    def init_grand_staff(self, **kwargs):
+        self.staff = GrandStaff(**kwargs)
+
+    def init_staff(self):
+        # TODO
+        pass
+
+
+if __name__ == '__main__':
+    staff_manager = StaffManager()
+    staff_manager.init_grand_staff(width=700, x=20, y=20)
+    pass
