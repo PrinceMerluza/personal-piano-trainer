@@ -12,22 +12,59 @@ class Staff:
     TREBLE_CLEF_FILE = "./assets/treble-clef.png"
     BASS_CLEF_FILE = "./assets/bass-clef.png"
 
-    def __init__(self, clef=None, width=200, x=0, y=0):
+    # Lines starts from the 1st top ledger line of the staff to the 1st bottom ledger line
+    # Spaces start from within the 1st outer ledger lines
+    NOTES_POS = {
+        "treble": {
+            "lines": ['A5', 'F5', 'D5', 'B4', 'G4', 'E4', 'C4'],
+            "spaces": ['G5', 'E5', 'C5', 'A4', 'F4', 'D4']
+        },
+        "bass": {
+            "lines": ['C4', 'A3', 'F3', 'D3', 'B2', 'G2', 'E2'],
+            "spaces": ['B3', 'G3', 'E3', 'C3', 'A2', 'F2']
+        },
+    }
+
+    def __init__(self, clef='', width=200, x=0, y=0):
         """
         Initializer
-        :param type:    String. 'treble' or 'bass'.
+        :param clef:    String. 'treble' or 'bass'.
         :param width:   Int. Width of entire staff.
         :param x:       Int. X-position of staff.
         :param y:       Int. Y-position of staff
         """
-        self.clef = clef
+        self.clef = clef.lower()
         self.width = width
         self.x = x
         self.y = y
+        self.notes_pos = Staff.NOTES_POS[clef]
 
     def get_pos(self):
         """Returns tuple of staff position"""
         return self.x, self.y
+
+    def draw_note(self, note, surface, x=0):
+        """
+        draw a single note into the staff. checks if it's a valid note to be on staff.
+        :param note: Note. note to draw
+        :param surface: Pygame Surfae.
+        :param x: int. pixel x-coord of note
+        :return bool: If note was drawn by the staff.
+        """
+        gap = Staff.STAFF_LINE_INTERVAL
+        pos = 0
+        offset = 0
+        if note.tone_str in self.notes_pos["lines"]:
+            pos = self.notes_pos["lines"].index(note.tone_str)
+            offset = (pos * gap) - gap
+        elif note.tone_str in self.notes_pos["spaces"]:
+            pos = self.notes_pos["spaces"].index(note.tone_str)
+            offset = (pos * gap) - (gap/2)
+        else:
+            return False
+
+        note.draw(surface, x, self.y + offset)
+        return True
 
     def draw(self, surface):
         """
@@ -74,16 +111,22 @@ class GrandStaff:
         :param x:       x position
         :param y:       y position
         """
-        self.treble_clef = Staff('treble', width, x, y)
-        self.bass_clef = Staff('bass', width, x, 180 + y)
+        self.treble_staff = Staff('treble', width, x, y)
+        self.bass_staff = Staff('bass', width, x, 180 + y)
 
     def draw(self, surface):
         """
         Draw the grand staff + notes
         :param surface: Pygame Surfae to draw the staffs to
         """
-        self.treble_clef.draw(surface)
-        self.bass_clef.draw(surface)
+        self.treble_staff.draw(surface)
+        self.bass_staff.draw(surface)
+
+    def draw_note(self, note, surface, x=0):
+        """Try to draw the note to its respective staff."""
+        if not self.treble_staff.draw_note(note, surface, x) \
+                and not self.bass_staff.draw_note(note, surface, x):
+            raise ValueError("No staff can draw {} note".format(note.tone_str))
 
 
 class StaffManager:
@@ -93,11 +136,21 @@ class StaffManager:
         self._notes = []
         self._max_notes = None
 
-    def add_note(self, note):
-        if type(note) == 'Note':
-            self._notes.append(note)
-        else:
-            raise TypeError("Append 'Note' object")
+    def add_note(self, *args, **kwargs):
+        """
+        Add the notes to the Manager
+        :param args: string or Notes.
+        :param kwargs: 'note_type'. str tones in args will be created with this NoteType
+        :return:
+        """
+        for note in args:
+            if type(note) == notes.Note:
+                self._notes.append(note)
+            elif type(note) == str:
+                if kwargs.get("note_type"):
+                    self._notes.append(notes.Note(note, note_type=kwargs["note_type"]))
+                else:
+                    self._notes.append(notes.Note(note))
 
     def draw(self, surface):
         """Draw staff and notes"""
@@ -106,9 +159,7 @@ class StaffManager:
 
         # Draw notes
         for i, note in enumerate(self._notes):
-            if 44 <= note.tone <= 77:
-                pass
-                #note.draw(surface, x=i * 30, y=)
+            self.staff.draw_note(note, surface, 130 + (i * 40))
 
     def init_grand_staff(self, **kwargs):
         self.staff = GrandStaff(**kwargs)
