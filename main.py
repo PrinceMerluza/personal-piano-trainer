@@ -31,14 +31,22 @@ test_note = ""
 
 
 def main():
-    grand_staff = staff.GrandStaff(700, 20, 20)
+    staff_manager = staff.StaffManager()
+    staff_manager.init_grand_staff(width=750, x=20, y=50)
 
     screen.fill(colors['WHITE'])
-    grand_staff.draw(screen)
-    pygame.display.update()
+    # staff_manager.add_note("G5", "E5", "C5", "A4", "F4", "D4",
+    #                        "B3", "G3", "E3", "C3", "A2", "F2")
+    staff_manager.add_note('A5', 'F5', 'D5', 'B4', 'G4', 'E4', 'C4',
+                           'A3', 'F3', 'D3', 'B2', 'G2', 'E2')
+    staff_manager.draw(screen)
 
+    # note = notes.Note(21, notes.NoteType.HALF)
+    # print(note.image)
+    # note.draw(screen, 150, 110)
     # random_test_note()
 
+    pygame.display.update()
     # Game Loop
     while True:
         event_update()
@@ -61,15 +69,15 @@ def event_update():
                 pressed_key(midi_event[0][1])
 
 
-def display_update():
-    global test_note
-    screen.fill(colors['WHITE'])
-
-    staff_pos = (30, 30)
-    staff.draw_grand_staff(700, screen, staff_pos)
-    draw_note_on_staff(staff_pos, 1, test_note)
-
-    pygame.display.update()
+# def display_update():
+#     global test_note
+#     screen.fill(colors['WHITE'])
+#
+#     staff_pos = (30, 30)
+#     staff.draw_grand_staff(700, screen, staff_pos)
+#     draw_note_on_staff(staff_pos, 1, test_note)
+#
+#     pygame.display.update()
 
 
 def pressed_key(key):
