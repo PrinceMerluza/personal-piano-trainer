@@ -58,10 +58,11 @@ class Note:
         """
         self._image = None
         self._note_type = None
+        self._tone = None
 
         # Internally, tone should always be in int MIDI representation
-        self._tone = Note.tone_val(tone)
-
+        self.tone = tone
+        print(self.tone)
         # Assign note type
         if not isinstance(note_type, NoteType):
             raise TypeError("Please use the NoteType Enum.")
@@ -85,6 +86,23 @@ class Note:
         """When note_type is changed also update the image"""
         self._note_type = val
         self._image = image.load(Note._image_file_info[val]["path"])
+
+    @property
+    def natural_val(self):
+        """
+        Get the natural note (without flats or sharps)
+        Will round to the sharp version.
+        TODO Consider Key in order to choose natural tone
+        """
+        normal = self.tone - 21
+        base_tone = normal % 12
+        octave = 1 + (normal // 12)
+
+        # Bring down the sharp
+        if base_tone in [1, 4, 6, 9, 11]:
+            base_tone -= 1
+
+        return octave * base_tone
 
     @property
     def image(self):
@@ -136,9 +154,9 @@ class Note:
     @classmethod
     def tone_val(cls, val):
         """Returns the tone int value regardless of input"""
-        if type(val) == 'str':
+        if type(val) == str:
             return cls.tone_str_to_val(val)
-        if type(val) == 'int':
+        if type(val) == int:
             if 21 <= val <= 108:
                 return val
             else:
