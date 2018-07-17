@@ -21,18 +21,18 @@ class Note:
     _SCALE_DOWN = 0.2
 
     _all_notes = {
-        ('A', 'a'): 0,
-        ('Bb', 'bb', 'A#', 'a#'): 1,
-        ('B', 'b'): 2,
-        ('C', 'c'): 3,
-        ('C#', 'c#', 'Db', 'db'): 4,
-        ('D', 'd'): 5,
-        ('Eb', 'eb', 'D#', 'd#'): 6,
-        ('E', 'e'): 7,
-        ('F', 'f'): 8,
-        ('F#', 'f#', 'Gb', 'gb'): 9,
-        ('G', 'g'): 10,
-        ('Ab', 'ab', 'G#', 'g#'): 11
+        ('C', 'c'): 0,
+        ('C#', 'c#', 'Db', 'db'): 1,
+        ('D', 'd'): 2,
+        ('Eb', 'eb', 'D#', 'd#'): 3,
+        ('E', 'e'): 4,
+        ('F', 'f'): 5,
+        ('F#', 'f#', 'Gb', 'gb'): 6,
+        ('G', 'g'): 7,
+        ('Ab', 'ab', 'G#', 'g#'): 8,
+        ('A', 'a'): 9,
+        ('Bb', 'bb', 'A#', 'a#'): 10,
+        ('B', 'b'): 11,
     }
 
     _image_file_info = {
@@ -94,12 +94,11 @@ class Note:
         Will round to the sharp version.
         TODO Consider Key in order to choose natural tone
         """
-        normal = self.tone - 21
-        base_tone = normal % 12
-        octave = 1 + (normal // 12)
+        base_tone = self.tone % 12
+        octave = (self.tone // 12) - 1
 
         # Bring down the sharp
-        if base_tone in [1, 4, 6, 9, 11]:
+        if base_tone in [1, 3, 6, 8, 10]:
             base_tone -= 1
 
         return octave * base_tone
@@ -115,19 +114,16 @@ class Note:
     def tone_val_to_str(cls, tone_val):
         """
         Converts a tone integer value to the string representation
-        Example: 21 --> 'A1'
+        Example: 21 --> 'A1', 0 --> 'C0'
         :param tone_val:
         :return:
         """
-        if not 21 <= tone_val <= 108:
+        if not 12 <= tone_val <= 108:
             raise ValueError('Value out of bounds')
 
-        # Normalize A1 to 0
-        tone = tone_val - 21
-
         # Get first entry in the notes tuple key.
-        base_val = next(k[0] for k, v in cls._all_notes.items() if v == tone % 12)
-        suffix = str((tone // 12) + 1)
+        base_val = next(k[0] for k, v in cls._all_notes.items() if v == tone_val % 12)
+        suffix = str((tone_val // 12) - 1)
 
         return base_val + suffix
 
@@ -143,10 +139,10 @@ class Note:
             prefix = tone_str[:-1]
             suffix = tone_str[-1]
             base_val = next(v for k, v in cls._all_notes.items() if prefix in k)
-            octave_offset = 12 * (int(suffix) - 1)
+            octave_offset = 12 * (int(suffix) + 1)
 
             # Add 21 for the A1 offset
-            return octave_offset + base_val + 21
+            return octave_offset + base_val
 
         except (ValueError, StopIteration) as e:
             raise Exception("Invalid tone string: '{}'".format(tone_str))
@@ -169,5 +165,5 @@ class Note:
 
 
 if __name__ == '__main__':
-    print(Note.tone_str_to_val('E5'))
+    print("{}".format(Note.tone_str_to_val("C0")))
     pass
