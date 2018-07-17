@@ -104,6 +104,11 @@ class Note:
         return octave * base_tone
 
     @property
+    def tone_str(self):
+        """Read only return the string representation of the tone"""
+        return Note.tone_val_to_str(self.tone)
+
+    @property
     def image(self):
         orig_size = self._image.get_size()
         resized = transform.smoothscale(self._image, (int(orig_size[0] * Note._SCALE_DOWN),
@@ -122,6 +127,7 @@ class Note:
             raise ValueError('Value out of bounds')
 
         # Get first entry in the notes tuple key.
+        # TODO Base the string representation based on Key
         base_val = next(k[0] for k, v in cls._all_notes.items() if v == tone_val % 12)
         suffix = str((tone_val // 12) - 1)
 
